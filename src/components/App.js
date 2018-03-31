@@ -13,12 +13,13 @@ class App extends Component {
     return (
         <div>
         <Grid container style={{ padding: '5em 0em' }}>
+            <Header as='h1' dividing>ReachOut</Header>
             <Grid.Row>
                 <Grid.Column>
-                    <Header as='h1' dividing>ReachOut</Header>
+                    <LocationFinder/>
                 </Grid.Column>
             </Grid.Row>
-            <LocationFinder/>
+
         </Grid>
             <h1 style={{textAlign: 'center'}}> Google Maps API + React </h1>
             <MapContainer google={this.props.google} />
