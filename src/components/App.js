@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import LocationFinder from './LocationFinder';
+import { Grid, Header } from 'semantic-ui-react';
+
 
 /**
  * Divided vertically
@@ -8,9 +11,14 @@ import React, { Component } from 'react';
 class App extends Component {
   render() {
     return (
-      <p>
-        Welcome to  ReachOut
-      </p>
+        <Grid container style={{ padding: '5em 0em' }}>
+            <Grid.Row>
+                <Grid.Column>
+                    <Header as='h1' dividing>ReachOut</Header>
+                </Grid.Column>
+            </Grid.Row>
+            <LocationFinder/>
+        </Grid>
     );
   }
 }
