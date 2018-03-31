@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import LocationFinder from './LocationFinder';
 import { Grid, Header } from 'semantic-ui-react';
-
-
+import { GoogleApiWrapper } from 'google-maps-react'
+import MapContainer from './MapContainer'
 /**
  * Divided vertically
  * Top - LocationFinder
@@ -11,6 +11,7 @@ import { Grid, Header } from 'semantic-ui-react';
 class App extends Component {
   render() {
     return (
+        <div>
         <Grid container style={{ padding: '5em 0em' }}>
             <Grid.Row>
                 <Grid.Column>
@@ -19,8 +20,13 @@ class App extends Component {
             </Grid.Row>
             <LocationFinder/>
         </Grid>
+            <h1 style={{textAlign: 'center'}}> Google Maps API + React </h1>
+            <MapContainer google={this.props.google} />
+        </div>
     );
   }
 }
 
-export default App;
+export default GoogleApiWrapper({
+    apiKey: 'AIzaSyBuZzoY6hXiSLSP6A_224DFq9XPTUspcj0'
+})(App)
