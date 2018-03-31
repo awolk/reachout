@@ -12,12 +12,13 @@ class App extends Component {
   render() {
     return (
         <Grid container style={{ padding: '5em 0em' }}>
+            <Header as='h1' dividing>ReachOut</Header>
             <Grid.Row>
                 <Grid.Column>
-                    <Header as='h1' dividing>ReachOut</Header>
+                    <LocationFinder/>
                 </Grid.Column>
             </Grid.Row>
-            <LocationFinder/>
+
         </Grid>
     );
   }
