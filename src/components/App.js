@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LocationFinder from './LocationFinder';
-import { Grid, Header, Message } from 'semantic-ui-react';
-import TemplateHub from "./TemplateHub";
+import { Grid, Header} from 'semantic-ui-react';
 
 
 /**
@@ -10,18 +9,6 @@ import TemplateHub from "./TemplateHub";
  * Bottom - TemplateHub
  */
 export default class App extends Component {
-  state = {
-    template: '',
-    subject: ''
-  };
-
-  handleTemplate = (template) => {
-    this.setState({ template });
-  };
-
-  handleSubject = (evt, data) => {
-    this.setState({ subject: data.value })
-  };
 
   render() {
     return (
@@ -34,18 +21,9 @@ export default class App extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              <LocationFinder template={this.state.template} subject={this.state.subject}/>
+              <LocationFinder/>
             </Grid.Column>
           </Grid.Row>
-        </Grid>
-        <Grid centered>
-        <Message style={{width:'80%'}}>
-          <TemplateHub
-            onTemplateChange={this.handleTemplate}
-            subject={this.state.subject}
-            onSubjectChange={this.handleSubject}
-          />
-        </Message>
         </Grid>
       </div>
     );

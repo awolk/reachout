@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Form, Grid, Message} from 'semantic-ui-react';
-import RepresentationFinder from './RepresentationFinder';
+import {Form, Message} from 'semantic-ui-react';
+import Container from './Container';
 import PlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-places-autocomplete';
 
 const renderSuggestion = ({ formattedSuggestion }) => (
@@ -45,8 +45,8 @@ export default class LocationFinder extends Component {
     this.handleButton = this.handleButton.bind(this);
   }
 
-  validateAddress(address) {
-    geocodeByAddress(address)
+  validateAddress() {
+    geocodeByAddress(this.state.address)
       .then(results => getLatLng(results[0]))
       .then(({ lat, lng }) => {
         console.log('Geocode Success', { lat, lng });
@@ -70,17 +70,19 @@ export default class LocationFinder extends Component {
   handleButton() {
     this.setState({
       loading: true,
+    }, function () {
+      this.validateAddress()
     });
-    this.validateAddress(this.state.address)
+
   }
 
   handleSelect(address) {
     this.setState({
       address,
       loading: true,
+    }, function () {
+      this.validateAddress()
     });
-    this.validateAddress(this.state.address);
-
   }
 
   handleChange(address) {
@@ -127,18 +129,7 @@ export default class LocationFinder extends Component {
         </Form>
         }
         {this.state.geocodeResults &&
-        <Grid padded>
-          <div className="ui internally celled grid">
-            <div className="row">
-              <div style={{width:"100%"}}>
-                <RepresentationFinder
-                  address={this.state.address}
-                  template={this.props.template}
-                  subject={this.props.subject}/>
-              </div>
-            </div>
-          </div>
-        </Grid>
+          <Container address={this.state.address}/>
         }
       </div>
     );
