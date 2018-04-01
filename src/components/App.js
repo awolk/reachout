@@ -12,25 +12,25 @@ import TemplateHub from "./TemplateHub";
 export default class App extends Component {
   render() {
     return (
-      <Grid container stretched style={{ padding: '5em 0em' }} columns={1}>
-        <Grid.Row>
-          <Grid.Column>
-            <Header as='h1' dividing>ReachOut</Header>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column>
-            <LocationFinder/>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row stretched>
-          <Grid.Column>
-            <Message>
-              <TemplateHub/>
-            </Message>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <div>
+        <Grid container stretched style={{ padding: '5em 0em' }} columns={1}>
+          <Grid.Row>
+            <Grid.Column>
+              <Header as='h1' dividing>ReachOut</Header>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <LocationFinder/>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <Grid centered>
+        <Message style={{height:'300px', width:'80%'}}>
+          <TemplateHub/>
+        </Message>
+        </Grid>
+      </div>
     );
   }
 }

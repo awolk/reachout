@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import axios from 'axios';
 import keys from '../keys';
+import {Grid, Message} from 'semantic-ui-react';
+import face from './face-icon.png';
 
 /**
  * Divided horizontally
@@ -18,10 +20,17 @@ export default class RepresentationFinder extends Component {
       params: {
         key: keys.CIVIC_API_KEY,
         address: this.props.address,
+        includedOffices: true
       }
     })
       .then(result => {
-        this.setState({reps: result.data.officials});
+        let officials = result.data.officials;
+        result.data.offices.forEach((office) => {
+          office.officialIndices.forEach((index) => {
+            officials[index].office = office.name
+          })
+        });
+        this.setState({reps: officials});
       })
       .catch(err => {
         throw err;
@@ -33,35 +42,67 @@ export default class RepresentationFinder extends Component {
 
   render(){
     return (
-      <div>
-        <div className="results">
-          <ul>
-            {this.state.reps && this.state.reps.map((rep, i) =>
-              <li key={i}>
-                <span className="photo"><img src={rep.photoUrl} alt={rep.name}/></span>
-                <span className="name">{rep.name}</span>
-                <span className="address">{rep.address[0].line1}<br/>{rep.address[0].city} {rep.address[0].state}, {rep.address[0].zip}</span>
-                <span className="phone">{rep.phones[0]}</span>
-                  {rep.channels &&
-                  <span className="social">
-                  {rep.channels.map((soc, i) => {
-                      if (soc.type === 'Facebook') {
-                          return <a key={i} href={'http://www.facebook.com/' + soc.id}
-                                    className="ion-social-facebook">Facebook</a>
+      <Message>
+        <div>
+          <div className="results">
+            <Grid divided columns={5}>
+              {this.state.reps && this.state.reps.reverse().map((rep, i) =>
+                <Grid.Row key={i}>
+                  <Grid.Column width={3}>
+                    <div align="center">
+                      {rep.photoUrl &&
+                      <img className="ui image avatar " src={rep.photoUrl} alt={rep.name}/>
                       }
-                      if (soc.type === 'Twitter') {
-                          return <a key={i} href={'http://www.twitter.com/' + soc.id}
-                                    className="ion-social-twitter">Twitter</a>;
+                      {!rep.photoUrl &&
+                      <img className="ui image avatar" src={face}/>
                       }
-                      return <span/>;
-                  })}
-                </span>
-                  }
-              </li>
-            )}
-          </ul>
+                      <br/>
+                      <strong>
+                      {rep.name}
+                      <br/>
+                      </strong>
+                      {rep.office}
+                    </div>
+                  </Grid.Column>
+                  <Grid.Column width={3}>
+                    {rep.address && rep.address[0].line1 && rep.address[0].city && rep.address[0].state && rep.address[0].zip &&
+                    <div>
+                      {rep.address[0].line1}<br/>{rep.address[0].city} {rep.address[0].state}, {rep.address[0].zip}
+                    </div>
+                    }
+                  </Grid.Column>
+                  <Grid.Column width={4}>
+                    {rep.phones && <div><i className="phone icon"/>{rep.phones[0]}<br/></div>}
+                    {rep.emails && <div><i className="mail icon"/>{rep.emails[0]}</div>}
+                  </Grid.Column>
+                  <Grid.Column width={2}>
+                    {rep.channels &&
+                    <Grid>
+                      <Grid.Row>
+                        <Grid.Column>
+                          {rep.channels.map((soc, i) => {
+                            if (soc.type === 'Facebook') {
+                              return <Grid.Row align="center">
+                                <a className="ui facebook button" role="button" href={'http://www.facebook.com/' + soc.id}>
+                                  <i aria-hidden="true" className="facebook icon"></i> Facebook</a></Grid.Row>
+                            }
+                            if (soc.type === 'Twitter') {
+                              return <Grid.Row align="center" ><a className="ui twitter button" role="button" href={'http://www.twitter.com/' + soc.id}>
+                                <i aria-hidden="true" className="twitter icon"></i> Twitter</a></Grid.Row>
+                            }
+                            return <span/>;
+                          })}
+                        </Grid.Column>
+                      </Grid.Row>
+                    </Grid>
+                    }
+                  </Grid.Column>
+                </Grid.Row>
+              )}
+            </Grid>
+          </div>
         </div>
-      </div>
+      </Message>
     );
   }
 }
