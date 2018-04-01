@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import LocationFinder from './LocationFinder';
 import { Grid, Header } from 'semantic-ui-react';
-import { GoogleApiWrapper } from 'google-maps-react'
-import MapContainer from './MapContainer'
+import MapContainer from './MapContainer';
 import TemplateHub from "./TemplateHub";
 
 
@@ -11,7 +10,7 @@ import TemplateHub from "./TemplateHub";
  * Top - LocationFinder
  * Bottom - TemplateHub
  */
-class App extends Component {
+export default class App extends Component {
   render() {
     return (
       <Grid container stretched style={{ padding: '5em 0em' }} columns={1}>
@@ -34,7 +33,3 @@ class App extends Component {
     );
   }
 }
-
-export default GoogleApiWrapper({
-    apiKey: 'AIzaSyBuZzoY6hXiSLSP6A_224DFq9XPTUspcj0'
-})(App)

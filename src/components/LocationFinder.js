@@ -44,62 +44,40 @@ export default class LocationFinder extends Component {
     this.handleButton = this.handleButton.bind(this);
   }
 
-  handleSelect(address) {
-    this.setState({
-      address,
-      loading: true,
-    });
-
+  validateAddress(address) {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(({ lat, lng }) => {
         console.log('Geocode Success', { lat, lng });
         this.setState({
-          geocodeResults: this.renderGeocodeSuccess(lat, lng),
+          geocodeResults: LocationFinder.renderGeocodeSuccess(lat, lng),
           loading: false,
         });
       })
       .catch(error => {
         console.log('Geocode Error', error);
         this.setState({
-          geocodeResults: this.renderGeocodeFailure(error),
+          geocodeResults: LocationFinder.renderGeocodeFailure(error),
           loading: false,
         });
       });
   }
 
-    validateAddress(address) {
-        geocodeByAddress(address)
-            .then(results => getLatLng(results[0]))
-            .then(({ lat, lng }) => {
-                console.log('Geocode Success', { lat, lng });
-                this.setState({
-                    geocodeResults: LocationFinder.renderGeocodeSuccess(lat, lng),
-                    loading: false,
-                });
-            })
-            .catch(error => {
-                console.log('Geocode Error', error);
-                this.setState({
-                    geocodeResults: LocationFinder.renderGeocodeFailure(error),
-                    loading: false,
-                });
-            });
-    }
-    handleButton() {
-        this.setState({
-            loading: true,
-        });
-        this.validateAddress(this.state.address)
-    }
-    handleSelect(address) {
-        this.setState({
-            address,
-            loading: true,
-        });
-        this.validateAddress(this.state.address);
+  handleButton() {
+    this.setState({
+      loading: true,
+    });
+    this.validateAddress(this.state.address)
+  }
+  
+  handleSelect(address) {
+    this.setState({
+      address,
+      loading: true,
+    });
+    this.validateAddress(this.state.address);
 
-    }
+  }
 
   handleChange(address) {
     this.setState({
