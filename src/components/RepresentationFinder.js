@@ -74,7 +74,7 @@ export default class RepresentationFinder extends Component {
                     {rep.emails &&
                     <div>
                       <i className="mail icon"/>
-                      <EmailLink email={rep.emails[0]} subject={this.props.subject} body={this.props.template}/>
+                      <EmailLink email={rep.emails[0]} subject={this.props.subject} body={this.props.template} name={rep.name} office={rep.office} address={this.props.address}/>
                     </div>
                     }
                   </Grid.Column>
