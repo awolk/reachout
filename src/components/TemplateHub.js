@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Tab, Button, Card } from 'semantic-ui-react';
+import { Input, Tab, Button, Card, Loader } from 'semantic-ui-react';
 import { EditorState, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -12,7 +12,7 @@ export default class TemplateHub extends Component {
   state = {
     editorState: EditorState.createEmpty(),
     lastLink: null,
-    loadedTemplates: [],
+    loadedTemplates: null,
     tabIndex: 0
   };
 
@@ -22,6 +22,13 @@ export default class TemplateHub extends Component {
   };
 
   componentDidMount() {
+    // Load templates to explore
+    getTemplates(6)
+      .then(loadedTemplates => {
+        this.setState({ loadedTemplates });
+      });
+
+    // Load current template selected
     if (window.location.pathname.length <= 1)
       return;
     const key = window.location.pathname.slice(1);
@@ -35,10 +42,6 @@ export default class TemplateHub extends Component {
           editorState: EditorState.createWithContent(ContentState.createFromText(body))
         });
         this.props.onTemplateChange(body);
-      });
-    getTemplates(6)
-      .then(loadedTemplates => {
-        this.setState({ loadedTemplates });
       });
   }
 
@@ -90,16 +93,22 @@ export default class TemplateHub extends Component {
       },
       {menuItem: 'Browse Templates', render: () =>
           <Tab.Pane>
-            <Card.Group>
-              {this.state.loadedTemplates.map((template, i) =>
-                <Card key={i} link onClick={this.switchToTemplate.bind(this, template)}>
-                  <Card.Content>
-                    <Card.Header>{template.subject}</Card.Header>
-                    <Card.Description>{template.body}</Card.Description>
-                  </Card.Content>
-                </Card>
-              )}
-            </Card.Group>
+            {this.state.loadedTemplates ?
+              <Card.Group>
+                {this.state.loadedTemplates.map((template, i) =>
+                  <Card key={i} link onClick={this.switchToTemplate.bind(this, template)}>
+                    <Card.Content>
+                      <Card.Header>{template.subject}</Card.Header>
+                      <Card.Description>{template.body}</Card.Description>
+                    </Card.Content>
+                  </Card>
+                )}
+              </Card.Group>
+              :
+              <div style={{margin: '4rem auto'}}>
+                <Loader active/>
+              </div>
+            }
           </Tab.Pane>
       }
     ];
