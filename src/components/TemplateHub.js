@@ -25,7 +25,7 @@ export default class TemplateHub extends Component {
     const key = window.location.pathname.slice(1);
     getTemplateByKey(key)
       .then(({subject, body}) => {
-        this.props.onSubjectChange(null, {value: body});
+        this.props.onSubjectChange(null, {value: subject});
         this.setState({
           editorState: EditorState.createWithContent(ContentState.createFromText(body))
         });
