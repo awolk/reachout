@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Tab, Button } from 'semantic-ui-react';
+import { Input, Tab, Button, Card } from 'semantic-ui-react';
 import { EditorState, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -11,7 +11,8 @@ import { newTemplate, getTemplates, getTemplateByKey } from "../database";
 export default class TemplateHub extends Component {
   state = {
     editorState: EditorState.createEmpty(),
-    lastLink: null
+    lastLink: null,
+    loadedTemplates: []
   };
 
   updateEditorState = (editorState) => {
@@ -30,6 +31,10 @@ export default class TemplateHub extends Component {
           editorState: EditorState.createWithContent(ContentState.createFromText(body))
         });
         this.props.onTemplateChange(body);
+      });
+    getTemplates(6)
+      .then(loadedTemplates => {
+        this.setState({ loadedTemplates });
       });
   }
 
@@ -62,7 +67,18 @@ export default class TemplateHub extends Component {
           </Tab.Pane>
       },
       {menuItem: 'Browse Templates', render: () =>
-          <Tab.Pane/>
+          <Tab.Pane>
+            <Card.Group>
+              {this.state.loadedTemplates.map((template, i) =>
+                <Card key={i} href={`${window.location.origin}/${template.key}`}>
+                  <Card.Content>
+                    <Card.Header>{template.subject}</Card.Header>
+                    <Card.Description>{template.body}</Card.Description>
+                  </Card.Content>
+                </Card>
+              )}
+            </Card.Group>
+          </Tab.Pane>
       }
     ];
     return (

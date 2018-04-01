@@ -10,27 +10,28 @@ const config = {
 };
 
 const app = firebase.initializeApp(config);
-const database = app.database();
 
 export function newTemplate(subject, body) {
   const data = { subject, body };
-  return database.ref().child('templates').push(data).key;
+  return app.database().ref().child('templates').push(data).key;
 }
 
 export function getTemplates(count) {
-  const ref = database.ref('/templates').limitToLast(count);
-  return ref.once('value').then(snapshot =>
-    snapshot.map(
+  const ref = app.database().ref('/templates').limitToLast(count);
+  return ref.once('value').then(snapshot => {
+    const res = [];
+    snapshot.forEach(
       child => {
         const val = child.val();
-        return {key: child.key, subject: val.subject, body: val.body};
+        res.push({key: child.key, subject: val.subject, body: val.body});
       }
-    )
-  );
+    );
+    return res;
+  });
 }
 
 export function getTemplateByKey(key) {
-  const ref = database.ref(`/templates/${key}`);
+  const ref = app.database().ref(`/templates/${key}`);
   return ref.once('value').then(snapshot => {
     const val = snapshot.val();
     return {key: snapshot.key, subject: val.subject, body: val.body};
