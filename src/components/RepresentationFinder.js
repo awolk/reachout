@@ -40,22 +40,22 @@ export default class RepresentationFinder extends Component {
 
   render(){
     return (
-      <Message>
+      <Message style={{marginBottom: '1rem', width: '65%', float:'none', margin:'0 auto'}}>
         <div>
           <div className="results">
             <Grid divided columns={5}>
               {this.state.reps && this.state.reps.map((rep, i) =>
                 <Grid.Row key={i}>
-                  <Grid.Column width={3}>
+                  <Grid.Column width={5}>
                     <div align="center">
                       {rep.photoUrl &&
-                      <img className="ui image avatar " src={rep.photoUrl} alt={rep.name}/>
+                      <img className="ui image avatar " style={{marginBottom:"0.3em"}} src={rep.photoUrl} alt={rep.name}/>
                       }
                       {!rep.photoUrl &&
-                      <img className="ui image avatar" src={face} alt={rep.name}/>
+                      <img className="ui image avatar" style={{marginBottom:"0.3em"}} src={face} alt={rep.name}/>
                       }
                       <br/>
-                      <strong>
+                      <strong style={{fontSize:"1.2em"}}>
                       {rep.name}
                       <br/>
                       </strong>

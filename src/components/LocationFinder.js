@@ -90,7 +90,7 @@ export default class LocationFinder extends Component {
       <div>
         {!this.state.state &&
         <div>
-          <Form error={!!this.props.error} style={{width:'80%', float: 'none', margin: '0 auto'}}>
+          <Form error={!!this.props.error} style={{width:'90%', float: 'none', margin: '0 auto'}}>
             <Message
               error
               content={this.props.error}
