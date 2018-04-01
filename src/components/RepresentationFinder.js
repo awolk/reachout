@@ -82,7 +82,11 @@ export default class RepresentationFinder extends Component {
                           {rep.channels.map((soc, i) => {
                             if (soc.type === 'Facebook') {
                               return (
-                                <Button key={i} color='facebook' href={'http://www.facebook.com/' + soc.id}>
+                                <Button
+                                  key={i}
+                                  color='facebook'
+                                  href={'http://www.facebook.com/' + soc.id}
+                                  style={{marginBottom: '.2rem'}}>
                                   <Icon name='facebook' /> Facebook
                                 </Button>
                               );
