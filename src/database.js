@@ -18,14 +18,21 @@ export function newTemplate(subject, body) {
 }
 
 export function getTemplates(count) {
-  return new Promise((resolve, reject) => {
-    const ref = database.ref('templates').limitToLast(count);
-    ref.once('value', snapshot => {
-      resolve(
-        snapshot.map(
-          child => ({key: child.key, value: child.val()})
-        )
-      );
-    });
+  const ref = database.ref('/templates').limitToLast(count);
+  return ref.once('value').then(snapshot =>
+    snapshot.map(
+      child => {
+        const val = child.val();
+        return {key: child.key, subject: val.subject, body: val.body};
+      }
+    )
+  );
+}
+
+export function getTemplateByKey(key) {
+  const ref = database.ref(`/templates/${key}`);
+  return ref.once('value').then(snapshot => {
+    const val = snapshot.val();
+    return {key: snapshot.key, subject: val.subject, body: val.body};
   });
 }
