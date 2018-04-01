@@ -12,7 +12,8 @@ export default class TemplateHub extends Component {
   state = {
     editorState: EditorState.createEmpty(),
     lastLink: null,
-    loadedTemplates: []
+    loadedTemplates: [],
+    tabIndex: 0
   };
 
   updateEditorState = (editorState) => {
@@ -25,7 +26,10 @@ export default class TemplateHub extends Component {
       return;
     const key = window.location.pathname.slice(1);
     getTemplateByKey(key)
-      .then(({subject, body}) => {
+      .then((template) => {
+        if (!template)
+          return;
+        const {subject, body} = template;
         this.props.onSubjectChange(null, {value: subject});
         this.setState({
           editorState: EditorState.createWithContent(ContentState.createFromText(body))
@@ -42,7 +46,25 @@ export default class TemplateHub extends Component {
   saveTemplate = () => {
     const key = newTemplate(this.props.subject, this.state.editorState.getCurrentContent().getPlainText());
     const lastLink = `${window.location.origin}/${key}`;
+    window.history.replaceState({}, 'ReachOut', `/${key}`);
     this.setState({ lastLink });
+  };
+
+  switchToTemplate(template) {
+    const {subject, body, key} = template;
+    window.history.replaceState({}, 'ReachOut', `/${key}`);
+    this.props.onSubjectChange(null, {value: subject});
+    this.setState({
+      editorState: EditorState.createWithContent(ContentState.createFromText(body)),
+      tabIndex: 0
+    });
+    this.props.onTemplateChange(body);
+  }
+
+  handleTabChange = (evt, data) => {
+    this.setState({
+      tabIndex: data.activeIndex
+    });
   };
 
   render() {
@@ -70,7 +92,7 @@ export default class TemplateHub extends Component {
           <Tab.Pane>
             <Card.Group>
               {this.state.loadedTemplates.map((template, i) =>
-                <Card key={i} href={`${window.location.origin}/${template.key}`}>
+                <Card key={i} link onClick={this.switchToTemplate.bind(this, template)}>
                   <Card.Content>
                     <Card.Header>{template.subject}</Card.Header>
                     <Card.Description>{template.body}</Card.Description>
@@ -82,7 +104,10 @@ export default class TemplateHub extends Component {
       }
     ];
     return (
-      <Tab panes={panes}/>
+      <Tab
+        panes={panes}
+        activeIndex={this.state.tabIndex}
+        onTabChange={this.handleTabChange}/>
     );
   }
 }

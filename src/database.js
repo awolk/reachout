@@ -23,7 +23,8 @@ export function getTemplates(count) {
     snapshot.forEach(
       child => {
         const val = child.val();
-        res.push({key: child.key, subject: val.subject, body: val.body});
+        if (val)
+          res.push({key: child.key, subject: val.subject, body: val.body});
       }
     );
     return res;
@@ -34,6 +35,8 @@ export function getTemplateByKey(key) {
   const ref = app.database().ref(`/templates/${key}`);
   return ref.once('value').then(snapshot => {
     const val = snapshot.val();
-    return {key: snapshot.key, subject: val.subject, body: val.body};
+    if (val)
+      return {key: snapshot.key, subject: val.subject, body: val.body};
+    return null;
   });
 }
