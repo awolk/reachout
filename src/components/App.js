@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LocationFinder from './LocationFinder';
-import { Grid, Header } from 'semantic-ui-react';
+import { Grid, Header, Message } from 'semantic-ui-react';
 import TemplateHub from "./TemplateHub";
 
 
@@ -25,7 +25,9 @@ export default class App extends Component {
         </Grid.Row>
         <Grid.Row stretched>
           <Grid.Column>
-            <TemplateHub/>
+            <Message>
+              <TemplateHub/>
+            </Message>
           </Grid.Column>
         </Grid.Row>
       </Grid>

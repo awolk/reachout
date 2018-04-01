@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Message, Form, Grid } from 'semantic-ui-react';
+import React, {Component} from 'react';
+import {Form, Grid, Message} from 'semantic-ui-react';
 import RepresentationFinder from './RepresentationFinder';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import PlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-places-autocomplete';
 import Map from "./Map";
 
 const renderSuggestion = ({ formattedSuggestion }) => (
-  <div>
-    <i className="fa fa-map-marker" />
+  <div style={{textAlign:'left'}}>
+    <i className="marker icon" />
     <strong>{formattedSuggestion.mainText}</strong>{' '}
     <small className="text-muted">{formattedSuggestion.secondaryText}</small>
   </div>
@@ -101,7 +101,8 @@ export default class LocationFinder extends Component {
     };
 
     return (
-      <Grid padded textAlign='center'>
+      <div style={{height:'300px', width:'50%', float: 'none', margin: '0 auto'}}>
+        {!this.state.geocodeResults &&
         <Form error={!!this.props.error}>
           <Message
             error
@@ -124,19 +125,22 @@ export default class LocationFinder extends Component {
             Search
           </Form.Button>
         </Form>
+        }
         {this.state.geocodeResults &&
-        <Grid columns={2}>
-          <Grid.Row>
-            <Grid.Column>
-              <Map lat={this.state.geocodeResults.lat} lng={this.state.geocodeResults.lng}/>
-            </Grid.Column>
-            <Grid.Column>
-              <RepresentationFinder address={this.state.address}/>
-            </Grid.Column>
-          </Grid.Row>
+        <Grid padded centered>
+          <Grid columns={2}>
+            <Grid.Row>
+              <Grid.Column>
+                <Map lat={this.state.geocodeResults.lat} lng={this.state.geocodeResults.lng}/>
+              </Grid.Column>
+              <Grid.Column>
+                <RepresentationFinder address={this.state.address}/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
         </Grid>
         }
-      </Grid>
+      </div>
     );
   }
 }
