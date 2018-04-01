@@ -5,12 +5,6 @@ import { Grid, Message, Button, Icon } from 'semantic-ui-react';
 import EmailLink from './EmailLink';
 import face from './face-icon.png';
 
-/**
- * Divided horizontally
- * Left side - Map
- * Right Side - Lists representatives
- */
-
 export default class RepresentationFinder extends Component {
   state = {
     reps: null
