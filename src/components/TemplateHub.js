@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Input } from 'semantic-ui-react';
 import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -13,14 +14,23 @@ export default class TemplateHub extends Component {
 
   updateEditorState = (editorState) => {
     this.setState({editorState});
+    this.props.onTemplateChange(editorState.getCurrentContent().getPlainText());
   };
 
   render() {
     return (
-      <Editor
-        editorState={this.state.editorState}
-        onEditorStateChange={this.updateEditorState}
-      />
+      <div>
+        <Input
+          style={{marginBottom: '1rem', width: '60vw'}}
+          placeholder='Subject'
+          value={this.props.subject}
+          onChange={this.props.onSubjectChange}
+        />
+        <Editor
+          editorState={this.state.editorState}
+          onEditorStateChange={this.updateEditorState}
+        />
+      </div>
     );
   }
 }

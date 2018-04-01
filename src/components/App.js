@@ -10,6 +10,19 @@ import TemplateHub from "./TemplateHub";
  * Bottom - TemplateHub
  */
 export default class App extends Component {
+  state = {
+    template: '',
+    subject: ''
+  };
+
+  handleTemplate = (template) => {
+    this.setState({ template });
+  };
+
+  handleSubject = (evt, data) => {
+    this.setState({ subject: data.value })
+  };
+
   render() {
     return (
       <div>
@@ -21,13 +34,17 @@ export default class App extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              <LocationFinder/>
+              <LocationFinder template={this.state.template} subject={this.state.subject}/>
             </Grid.Column>
           </Grid.Row>
         </Grid>
         <Grid centered>
-        <Message style={{height:'300px', width:'80%'}}>
-          <TemplateHub/>
+        <Message style={{width:'80%'}}>
+          <TemplateHub
+            onTemplateChange={this.handleTemplate}
+            subject={this.state.subject}
+            onSubjectChange={this.handleSubject}
+          />
         </Message>
         </Grid>
       </div>

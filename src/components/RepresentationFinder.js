@@ -31,15 +31,12 @@ export default class RepresentationFinder extends Component {
             officials[index].office = office.name
           })
         });
-        this.setState({reps: officials});
+        this.setState({reps: officials.reverse()});
       })
       .catch(err => {
         throw err;
       });
   }
-
-
-
 
   render(){
     return (
@@ -47,7 +44,7 @@ export default class RepresentationFinder extends Component {
         <div>
           <div className="results">
             <Grid divided columns={5}>
-              {this.state.reps && this.state.reps.reverse().map((rep, i) =>
+              {this.state.reps && this.state.reps.map((rep, i) =>
                 <Grid.Row key={i}>
                   <Grid.Column width={3}>
                     <div align="center">
@@ -74,7 +71,12 @@ export default class RepresentationFinder extends Component {
                   </Grid.Column>
                   <Grid.Column width={4}>
                     {rep.phones && <div><i className="phone icon"/><a href={`tel:${rep.phones[0]}`}>{rep.phones[0]}</a><br/></div>}
-                    {rep.emails && <div><i className="mail icon"/><EmailLink email={rep.emails[0]} subject='test' body='hi'/></div>}
+                    {rep.emails &&
+                    <div>
+                      <i className="mail icon"/>
+                      <EmailLink email={rep.emails[0]} subject={this.props.subject} body={this.props.template}/>
+                    </div>
+                    }
                   </Grid.Column>
                   <Grid.Column width={3}>
                     {rep.channels &&

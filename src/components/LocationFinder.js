@@ -131,7 +131,10 @@ export default class LocationFinder extends Component {
           <div className="ui internally celled grid">
             <div className="row">
               <div style={{width:"100%"}}>
-                <RepresentationFinder address={this.state.address}/>
+                <RepresentationFinder
+                  address={this.state.address}
+                  template={this.props.template}
+                  subject={this.props.subject}/>
               </div>
             </div>
           </div>
