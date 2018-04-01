@@ -11,3 +11,21 @@ const config = {
 
 const app = firebase.initializeApp(config);
 const database = app.database();
+
+export function newTemplate(subject, body) {
+  const data = { subject, body };
+  return database.ref().child('templates').push(data).key;
+}
+
+export function getTemplates(count) {
+  return new Promise((resolve, reject) => {
+    const ref = database.ref('templates').limitToLast(count);
+    ref.once('value', snapshot => {
+      resolve(
+        snapshot.map(
+          child => ({key: child.key, value: child.val()})
+        )
+      );
+    });
+  });
+}
