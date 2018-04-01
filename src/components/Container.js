@@ -30,8 +30,8 @@ export default class Container extends Component {
               <div style={{width:"100%"}}>
                 <RepresentationFinder
                   address={this.state.address}
-                  template={this.props.template}
-                  subject={this.props.subject}/>
+                  template={this.state.template}
+                  subject={this.state.subject}/>
               </div>
             </div>
           </div>
