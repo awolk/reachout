@@ -50,14 +50,17 @@ export default class LocationFinder extends Component {
       .then(({ lat, lng }) => {
         console.log('Geocode Success', { lat, lng });
         this.setState({
-          geocodeResults: LocationFinder.renderGeocodeSuccess(lat, lng),
+          geocodeResults: {
+            lat: lat,
+            lng: lng
+          },
           loading: false,
         });
       })
       .catch(error => {
         console.log('Geocode Error', error);
         this.setState({
-          geocodeResults: LocationFinder.renderGeocodeFailure(error),
+          geocodeResults: null,
           loading: false,
         });
       });
@@ -86,25 +89,6 @@ export default class LocationFinder extends Component {
     });
   }
 
-  static renderGeocodeFailure(err) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        <strong>Error!</strong> {err}
-      </div>
-    );
-  }
-
-  static renderGeocodeSuccess(lat, lng) {
-    return (
-      <div className="alert alert-success" role="alert">
-        <strong>Success!</strong> Geocoder found latitude and longitude:{' '}
-        <strong>
-          {lat}, {lng}
-        </strong>
-      </div>
-    );
-  }
-
   render() {
     const inputProps = {
       type: 'text',
@@ -115,7 +99,7 @@ export default class LocationFinder extends Component {
     };
 
     return (
-      <Grid padded textAlign='center'>
+      <Grid padded textAlign='left'>
         <Form error={!!this.props.error}>
           <Message
             error
@@ -130,12 +114,6 @@ export default class LocationFinder extends Component {
               onError={onError}
               shouldFetchSuggestions={shouldFetchSuggestions}
             />
-            {this.state.loading && (
-              <Loader/>
-            )}
-            {this.state.geocodeResults && (
-              <div className="geocoding-results">{this.state.geocodeResults}</div>
-            )}
           </Form.Field>
           <Form.Button
             type='submit'
@@ -144,6 +122,22 @@ export default class LocationFinder extends Component {
             Search
           </Form.Button>
         </Form>
+          {this.state.loading && (
+              <Loader/>
+          )}
+          {this.state.geocodeResults && (
+              <Message positive>
+                  <strong>Success!</strong> Geocoder found latitude and longitude:{' '}
+                  <strong>
+                      {this.state.geocodeResults.lat}, {this.state.geocodeResults.lng}
+                  </strong>
+              </Message>
+          )}
+          {!this.state.geocodeResults && this.state.address && (
+              <Message negative>
+                  <strong>Error!</strong>
+              </Message>
+          )}
       </Grid>
     );
   }
