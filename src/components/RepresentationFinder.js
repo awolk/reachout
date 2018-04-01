@@ -28,6 +28,9 @@ export default class RepresentationFinder extends Component {
       });
   }
 
+
+
+
   render(){
     return (
       <div>
@@ -39,19 +42,21 @@ export default class RepresentationFinder extends Component {
                 <span className="name">{rep.name}</span>
                 <span className="address">{rep.address[0].line1}<br/>{rep.address[0].city} {rep.address[0].state}, {rep.address[0].zip}</span>
                 <span className="phone">{rep.phones[0]}</span>
-                <span className="social">
+                  {rep.channels &&
+                  <span className="social">
                   {rep.channels.map((soc, i) => {
-                    if (soc.type === 'Facebook') {
-                      return <a key={i} href={'http://www.facebook.com/' + soc.id}
-                                className="ion-social-facebook">Facebook</a>
-                    }
-                    if (soc.type === 'Twitter') {
-                      return <a key={i} href={'http://www.twitter.com/' + soc.id}
-                                className="ion-social-twitter">Twitter</a>;
-                    }
-                    return <span/>;
+                      if (soc.type === 'Facebook') {
+                          return <a key={i} href={'http://www.facebook.com/' + soc.id}
+                                    className="ion-social-facebook">Facebook</a>
+                      }
+                      if (soc.type === 'Twitter') {
+                          return <a key={i} href={'http://www.twitter.com/' + soc.id}
+                                    className="ion-social-twitter">Twitter</a>;
+                      }
+                      return <span/>;
                   })}
                 </span>
+                  }
               </li>
             )}
           </ul>
