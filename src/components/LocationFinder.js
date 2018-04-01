@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Message, Form, Grid, Loader } from 'semantic-ui-react';
+import { Message, Form, Grid } from 'semantic-ui-react';
+import RepresentationFinder from './RepresentationFinder';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import Map from "./Map";
 
 const renderSuggestion = ({ formattedSuggestion }) => (
   <div>
@@ -72,7 +74,7 @@ export default class LocationFinder extends Component {
     });
     this.validateAddress(this.state.address)
   }
-  
+
   handleSelect(address) {
     this.setState({
       address,
@@ -99,7 +101,7 @@ export default class LocationFinder extends Component {
     };
 
     return (
-      <Grid padded textAlign='left'>
+      <Grid padded textAlign='center'>
         <Form error={!!this.props.error}>
           <Message
             error
@@ -122,22 +124,18 @@ export default class LocationFinder extends Component {
             Search
           </Form.Button>
         </Form>
-          {this.state.loading && (
-              <Loader/>
-          )}
-          {this.state.geocodeResults && (
-              <Message positive>
-                  <strong>Success!</strong> Geocoder found latitude and longitude:{' '}
-                  <strong>
-                      {this.state.geocodeResults.lat}, {this.state.geocodeResults.lng}
-                  </strong>
-              </Message>
-          )}
-          {!this.state.geocodeResults && this.state.address && (
-              <Message negative>
-                  <strong>Error!</strong>
-              </Message>
-          )}
+        {this.state.geocodeResults &&
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column>
+              <Map lat={this.state.geocodeResults.lat} lng={this.state.geocodeResults.lng}/>
+            </Grid.Column>
+            <Grid.Column>
+              <RepresentationFinder address={this.state.address}/>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        }
       </Grid>
     );
   }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LocationFinder from './LocationFinder';
 import { Grid, Header } from 'semantic-ui-react';
-import MapContainer from './MapContainer';
 import TemplateHub from "./TemplateHub";
 
 
