@@ -17,7 +17,10 @@ export default class TemplateHub extends Component {
 
   render() {
     return (
-      <Editor editorState={this.state.editorState} onEditorStateChange={this.updateEditorState}/>
+      <Editor
+        editorState={this.state.editorState}
+        onEditorStateChange={this.updateEditorState}
+      />
     );
   }
 }
