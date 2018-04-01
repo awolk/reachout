@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import keys from '../keys';
 
 /**
  * Divided horizontally
@@ -14,7 +15,7 @@ class RepresentationFinder extends Component {
     componentDidMount() {
         axios.get('https://www.googleapis.com/civicinfo/v2/representatives',{
             params: {
-                key: '',//todo key here,
+                key: keys.CIVIC_API_KEY,
                 address: this.prop.address,
             }
         }).then(result => {this.setState({reps: result.data.officials})})

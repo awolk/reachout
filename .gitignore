@@ -1,5 +1,8 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
+# keys
+src/keys.json
+
 # dependencies
 /node_modules
 
