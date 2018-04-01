@@ -52,7 +52,7 @@ export default class RepresentationFinder extends Component {
                       <img className="ui image avatar " src={rep.photoUrl} alt={rep.name}/>
                       }
                       {!rep.photoUrl &&
-                      <img className="ui image avatar" src={face}/>
+                      <img className="ui image avatar" src={face} alt={rep.name}/>
                       }
                       <br/>
                       <strong>

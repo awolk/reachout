@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Form, Message} from 'semantic-ui-react';
 import Container from './Container';
 import PlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-places-autocomplete';
+import reach from './reach.png'
 
 const renderSuggestion = ({ formattedSuggestion }) => (
   <div style={{textAlign:'left'}}>
@@ -88,23 +89,28 @@ export default class LocationFinder extends Component {
     return (
       <div>
         {!this.state.state &&
-        <Form error={!!this.props.error} style={{width:'80%', float: 'none', margin: '0 auto'}}>
-          <Message
-            error
-            content={this.props.error}
-          />
-          <Form.Field>
-            <PlacesAutocomplete
-              highlightFirstSuggestion
-              renderSuggestion={renderSuggestion}
-              inputProps={inputProps}
-              onSelect={this.handleSelect}
-              onError={onError}
-              shouldFetchSuggestions={shouldFetchSuggestions}
-              options={{componentRestrictions: {country: "us"}}}
+        <div>
+          <Form error={!!this.props.error} style={{width:'80%', float: 'none', margin: '0 auto'}}>
+            <Message
+              error
+              content={this.props.error}
             />
-          </Form.Field>
-        </Form>
+            <Form.Field
+              style={{width:"50%", float: 'none', margin: '0 auto', marginTop: '3em'}}
+            >
+              <PlacesAutocomplete
+                highlightFirstSuggestion
+                renderSuggestion={renderSuggestion}
+                inputProps={inputProps}
+                onSelect={this.handleSelect}
+                onError={onError}
+                shouldFetchSuggestions={shouldFetchSuggestions}
+                options={{componentRestrictions: {country: "us"}}}
+              />
+            </Form.Field>
+          </Form>
+          <img className="image" src={reach} style={{width: "25%", height: "auto", position: "absolute", right: "0px",  bottom: "0px"}}/>
+        </div>
         }
         {this.state.state &&
         <Container address={this.state.address} state={this.state.state}/>
