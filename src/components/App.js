@@ -3,7 +3,6 @@ import LocationFinder from './LocationFinder';
 import { Grid, Header, Message } from 'semantic-ui-react';
 import TemplateHub from "./TemplateHub";
 import BasicMap from "./WorldMap";
-import BasicMap from "./WorldMap";
 
 /**
  * Divided vertically
@@ -31,7 +30,7 @@ export default class App extends Component {
           <TemplateHub/>
         </Message>
         </Grid>
-          <BasicMap/>
+          <BasicMap locationName={"ken"} lat={34.0689} lng={-118.4452} selCountry={false} selState={false} state={"Tennessee"}/>
       </div>
     );
   }
