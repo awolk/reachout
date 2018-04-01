@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import LocationFinder from './LocationFinder';
-import { Grid, Header, Message } from 'semantic-ui-react';
-import TemplateHub from "./TemplateHub";
-import BasicMap from "./WorldMap";
-
+import { Grid, Header } from 'semantic-ui-react';
 
 /**
  * Divided vertically
@@ -27,7 +24,6 @@ export default class App extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-          <BasicMap selCountry={false} selState={false} state={"Tennessee"}/>
       </div>
     );
   }

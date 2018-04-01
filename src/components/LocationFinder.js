@@ -11,7 +11,7 @@ const renderSuggestion = ({ formattedSuggestion }) => (
   </div>
 );
 
-const shouldFetchSuggestions = ({ value }) => value.length > 0;
+const shouldFetchSuggestions = ({ value }) => true;
 
 const onError = (status, clearSuggestions) => {
   console.log(
@@ -32,65 +32,49 @@ const onError = (status, clearSuggestions) => {
  * It displays a RepresentationFinder
  */
 export default class LocationFinder extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      address: null,
-      geocodeResults: null,
-      loading: false,
-    };
-
-    this.handleSelect = this.handleSelect.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleButton = this.handleButton.bind(this);
-  }
+  state = {
+    address: null,
+    state: null,
+    loading: false,
+  };
 
   validateAddress() {
     geocodeByAddress(this.state.address)
-      .then(results => getLatLng(results[0]))
-      .then(({ lat, lng }) => {
-        console.log('Geocode Success', { lat, lng });
+      .then(results => {
+        return results[0].address_components.find(
+          component => component.types.indexOf("administrative_area_level_1") !== -1
+        ).long_name;
+      })
+      .then(state => {
         this.setState({
-          geocodeResults: {
-            lat: lat,
-            lng: lng
-          },
+          state,
           loading: false,
         });
       })
       .catch(error => {
         console.log('Geocode Error', error);
         this.setState({
-          geocodeResults: null,
+          state: null,
           loading: false,
         });
       });
   }
 
-  handleButton() {
-    this.setState({
-      loading: true,
-    }, function () {
-      this.validateAddress()
-    });
-
-  }
-
-  handleSelect(address) {
+  handleSelect = (address) => {
     this.setState({
       address,
       loading: true,
-    }, function () {
-      this.validateAddress()
+    }, () => {
+      this.validateAddress();
     });
-  }
+  };
 
-  handleChange(address) {
+  handleChange = (address) => {
     this.setState({
       address,
-      geocodeResults: null,
+      state: null,
     });
-  }
+  };
 
   render() {
     const inputProps = {
@@ -103,33 +87,27 @@ export default class LocationFinder extends Component {
 
     return (
       <div>
-        {!this.state.geocodeResults &&
-        <Form error={!!this.props.error} style={{height:'300px', width:'50%', float: 'none', margin: '0 auto'}}>
+        {!this.state.state &&
+        <Form error={!!this.props.error} style={{width:'80%', float: 'none', margin: '0 auto'}}>
           <Message
             error
             content={this.props.error}
           />
           <Form.Field>
             <PlacesAutocomplete
+              highlightFirstSuggestion
               renderSuggestion={renderSuggestion}
               inputProps={inputProps}
               onSelect={this.handleSelect}
-              onEnterKeyDown={this.handleSelect}
               onError={onError}
               shouldFetchSuggestions={shouldFetchSuggestions}
               options={{componentRestrictions: {country: "us"}}}
             />
           </Form.Field>
-          <Form.Button
-            type='submit'
-            onClick={this.handleButton}
-          >
-            Search
-          </Form.Button>
         </Form>
         }
-        {this.state.geocodeResults &&
-          <Container address={this.state.address}/>
+        {this.state.state &&
+        <Container address={this.state.address} state={this.state.state}/>
         }
       </div>
     );

@@ -100,7 +100,7 @@ export default class RepresentationFinder extends Component {
                                 </Button>
                               );
                             }
-                            return <span/>;
+                            return <span key={i}/>;
                           })}<br/>
                         </div>
                     }

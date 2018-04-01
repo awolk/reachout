@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
 import {Grid, Message} from 'semantic-ui-react';
 import TemplateHub from "./TemplateHub";
-import RepresentationFinder from "./RepresentationFinder"
+import RepresentationFinder from "./RepresentationFinder";
+import BasicMap from "./WorldMap";
 
 export default class Container extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      address: props.address,
-      template: '',
-      subject: ''
-    };
-  }
+  state = {
+    template: '',
+    subject: ''
+  };
 
   handleTemplate = (template) => {
     this.setState({ template });
@@ -24,12 +21,17 @@ export default class Container extends Component {
   render() {
     return (
       <div>
+        <BasicMap
+          selCountry={false}
+          selState={true}
+          state={this.props.state}
+        />
         <Grid padded>
           <div className="ui internally celled grid">
             <div className="row">
               <div style={{width:"100%"}}>
                 <RepresentationFinder
-                  address={this.state.address}
+                  address={this.props.address}
                   template={this.state.template}
                   subject={this.state.subject}/>
               </div>
