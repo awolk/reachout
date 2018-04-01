@@ -1,7 +1,8 @@
 import React, { Component} from 'react';
 import axios from 'axios';
 import keys from '../keys';
-import {Grid, Message} from 'semantic-ui-react';
+import { Grid, Message, Button, Icon } from 'semantic-ui-react';
+import EmailLink from './EmailLink';
 import face from './face-icon.png';
 
 /**
@@ -72,29 +73,30 @@ export default class RepresentationFinder extends Component {
                     }
                   </Grid.Column>
                   <Grid.Column width={4}>
-                    {rep.phones && <div><i className="phone icon"/>{rep.phones[0]}<br/></div>}
-                    {rep.emails && <div><i className="mail icon"/>{rep.emails[0]}</div>}
+                    {rep.phones && <div><i className="phone icon"/><a href={`tel:${rep.phones[0]}`}>{rep.phones[0]}</a><br/></div>}
+                    {rep.emails && <div><i className="mail icon"/><EmailLink email={rep.emails[0]} subject='test' body='hi'/></div>}
                   </Grid.Column>
-                  <Grid.Column width={2}>
+                  <Grid.Column width={3}>
                     {rep.channels &&
-                    <Grid>
-                      <Grid.Row>
-                        <Grid.Column>
+                        <div>
                           {rep.channels.map((soc, i) => {
                             if (soc.type === 'Facebook') {
-                              return <Grid.Row align="center">
-                                <a className="ui facebook button" role="button" href={'http://www.facebook.com/' + soc.id}>
-                                  <i aria-hidden="true" className="facebook icon"></i> Facebook</a></Grid.Row>
+                              return (
+                                <Button key={i} color='facebook' href={'http://www.facebook.com/' + soc.id}>
+                                  <Icon name='facebook' /> Facebook
+                                </Button>
+                              );
                             }
                             if (soc.type === 'Twitter') {
-                              return <Grid.Row align="center" ><a className="ui twitter button" role="button" href={'http://www.twitter.com/' + soc.id}>
-                                <i aria-hidden="true" className="twitter icon"></i> Twitter</a></Grid.Row>
+                              return (
+                                <Button key={i} color='twitter' href={'http://www.twitter.com/' + soc.id}>
+                                  <Icon name='twitter' /> Twitter
+                                </Button>
+                              );
                             }
                             return <span/>;
-                          })}
-                        </Grid.Column>
-                      </Grid.Row>
-                    </Grid>
+                          })}<br/>
+                        </div>
                     }
                   </Grid.Column>
                 </Grid.Row>
