@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import {Form, Message} from 'semantic-ui-react';
 import Container from './Container';
 import PlacesAutocomplete, {geocodeByAddress, getLatLng} from 'react-places-autocomplete';
-import reach from './reach.png'
+import reach from './reach.png';
+
+const google = window.google;
 
 const renderSuggestion = ({ formattedSuggestion }) => (
   <div style={{textAlign:'left'}}>
@@ -38,6 +40,30 @@ export default class LocationFinder extends Component {
     state: null,
     loading: false,
   };
+
+  componentDidMount() {
+    if (!navigator.geolocation) return;
+    console.log('Attempting to geolocate');
+    navigator.geolocation.getCurrentPosition(pos => {
+      const {latitude, longitude} = pos.coords;
+      console.log('Creating geocoder');
+      const geocoder = new google.maps.Geocoder();
+      const latLng = new google.maps.LatLng(latitude, longitude);
+      console.log('Geocoding');
+      geocoder.geocode({latLng: latLng}, (results, status) => {
+        console.log('Geocoded');
+        if (status !== google.maps.GeocoderStatus.OK)
+          return;
+        const address = results[0].formatted_address;
+        this.setState({
+          address,
+          loading: true
+        }, () => {
+          this.validateAddress();
+        });
+      });
+    });
+  }
 
   validateAddress() {
     geocodeByAddress(this.state.address)
