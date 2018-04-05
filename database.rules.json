@@ -1,8 +1,8 @@
 {
   "rules": {
     "templates": {
+      ".read": true,
       "$template": {
-        ".read": true,
         ".write": "!data.exists()"
       }
     }
