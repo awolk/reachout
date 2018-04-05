@@ -1,6 +1,10 @@
 {
   "rules": {
-    ".read": true,
-    ".write": "!data.exists()"
+    "templates": {
+      "$template": {
+        ".read": true,
+        ".write": "!data.exists()"
+      }
+    }
   }
 }
